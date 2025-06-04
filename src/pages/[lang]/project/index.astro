@@ -1,0 +1,29 @@
+---
+import ProjectCard from "~/components/astro/project-card.astro"
+import { en } from "~/config"
+import { projects } from "~/config/projects"
+import { getLangFromUrl, useTranslations } from "~/i18n/utils"
+import MainLayout from "~/layouts/main.astro"
+import { getLanguagePaths } from "~/utils/langs"
+
+export function getStaticPaths() {
+	return getLanguagePaths()
+}
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const pageMeta = en.pageMeta
+---
+
+<MainLayout
+	title={pageMeta.project.title}
+	description={pageMeta.project.description}
+	ogImage={pageMeta.project.ogImage}
+	needComment={true}
+>
+	<h3 class="my-10 text-center text-xl font-bold">{t("project.title")}</h3>
+
+	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+		{projects.map(project => <ProjectCard {...project} />)}
+	</div>
+</MainLayout>
